@@ -70,8 +70,7 @@ public class Employee {
     }
 
 
-    public Employee(Long employeeID, String firstName, String lastName, String employeePhone, String employeeEmailAddress) {
-        this.employeeID = employeeID;
+    public Employee(String firstName, String lastName, String employeePhone, String employeeEmailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.employeePhone = employeePhone;

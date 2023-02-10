@@ -26,10 +26,6 @@ public class EmployeeController {
         this.assembler = assembler;
     }
 
-
-    // Aggregate root
-    // tag::get-aggregate-root[]
-    // end::get-aggregate-root[]
     @GetMapping("/employees")
     CollectionModel<EntityModel<Employee>> all() {
 
@@ -65,7 +61,7 @@ public class EmployeeController {
 
         Employee updatedEmployee = repository.findById(employeeID) //
                 .map(employee -> {
-                    employee.setFirstName(newEmployee.getFirstName());
+                    employee.setName(newEmployee.getName());
                     employee.setEmployeeEmailAddress(newEmployee.getEmployeeEmailAddress());
                     return repository.save(employee);
                 }) //
