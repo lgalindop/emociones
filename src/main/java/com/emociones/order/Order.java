@@ -14,11 +14,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "customer_order")
 public class Order {
-    public String getOrderID() {
+    public Long getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(String orderID) {
+    public void setOrderID(Long orderID) {
         this.orderID = orderID;
     }
 
@@ -182,8 +182,8 @@ public class Order {
         this.orderStatus = orderStatus;
     }
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("DD/MM/YYYY", Locale.ENGLISH);
-    LocalDate LuisBirthDayDate = LocalDate.parse("15/12/1984", formatter);
-    private @Id @GeneratedValue String orderID;
+    //LocalDate LuisBirthDayDate = LocalDate.parse("15/12/1984", formatter);
+    private @Id @GeneratedValue Long orderID;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private int numberOfAdultsInQuote;

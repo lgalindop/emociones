@@ -38,11 +38,11 @@ class OrderController {
                 linkTo(methodOn(OrderController.class).all()).withSelfRel());
     }
 
-    @GetMapping("/orders/{id}")
-    EntityModel<Order> one(@PathVariable Long id) {
+    @GetMapping("/orders/{orderID}")
+    EntityModel<Order> one(@PathVariable Long orderID) {
 
-        Order order = orderRepository.findById(id) //
-                .orElseThrow(() -> new OrderNotFoundException(id));
+        Order order = orderRepository.findById(orderID) //
+                .orElseThrow(() -> new OrderNotFoundException(orderID));
 
         return assembler.toModel(order);
     }
@@ -50,21 +50,21 @@ class OrderController {
     @PostMapping("/orders")
     ResponseEntity<EntityModel<Order>> newOrder(@RequestBody Order order) {
 
-        order.setStatus(Status.IN_PROGRESS);
+        order.setOrderStatus(OrderStatus.IN_PROGRESS);
         Order newOrder = orderRepository.save(order);
 
         return ResponseEntity //
-                .created(linkTo(methodOn(OrderController.class).one(newOrder.getId())).toUri()) //
+                .created(linkTo(methodOn(OrderController.class).one(newOrder.getOrderID())).toUri()) //
                 .body(assembler.toModel(newOrder));
     }
-    @DeleteMapping("/orders/{id}/cancel")
-    ResponseEntity<?> cancel(@PathVariable Long id) {
+    @DeleteMapping("/orders/{orderID}/cancel")
+    ResponseEntity<?> cancel(@PathVariable Long orderID) {
 
-        Order order = orderRepository.findById(id) //
-                .orElseThrow(() -> new OrderNotFoundException(id));
+        Order order = orderRepository.findById(orderID) //
+                .orElseThrow(() -> new OrderNotFoundException(orderID));
 
-        if (order.getStatus() == Status.IN_PROGRESS) {
-            order.setStatus(Status.CANCELLED);
+        if (order.getOrderStatus() == OrderStatus.IN_PROGRESS) {
+            order.setOrderStatus(OrderStatus.CANCELLED);
             return ResponseEntity.ok(assembler.toModel(orderRepository.save(order)));
         }
 
@@ -73,17 +73,17 @@ class OrderController {
                 .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE) //
                 .body(Problem.create() //
                         .withTitle("Method not allowed") //
-                        .withDetail("You can't cancel an order that is in the " + order.getStatus() + " status"));
+                        .withDetail("You can't cancel an order that is in the " + order.getOrderStatus() + " status"));
     }
 
-    @PutMapping("/orders/{id}/complete")
-    ResponseEntity<?> complete(@PathVariable Long id) {
+    @PutMapping("/orders/{orderID}/complete")
+    ResponseEntity<?> complete(@PathVariable Long orderID) {
 
-        Order order = orderRepository.findById(id) //
-                .orElseThrow(() -> new OrderNotFoundException(id));
+        Order order = orderRepository.findById(orderID) //
+                .orElseThrow(() -> new OrderNotFoundException(orderID));
 
-        if (order.getStatus() == Status.IN_PROGRESS) {
-            order.setStatus(Status.COMPLETED);
+        if (order.getOrderStatus() == OrderStatus.IN_PROGRESS) {
+            order.setOrderStatus(OrderStatus.COMPLETED);
             return ResponseEntity.ok(assembler.toModel(orderRepository.save(order)));
         }
 
@@ -92,6 +92,6 @@ class OrderController {
                 .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE) //
                 .body(Problem.create() //
                         .withTitle("Method not allowed") //
-                        .withDetail("You can't complete an order that is in the " + order.getStatus() + " status"));
+                        .withDetail("You can't complete an order that is in the " + order.getOrderStatus() + " status"));
     }
 }
