@@ -8,7 +8,6 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Currency;
-import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -181,7 +180,7 @@ public class Order {
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("DD/MM/YYYY", Locale.ENGLISH);
+    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
     //LocalDate LuisBirthDayDate = LocalDate.parse("15/12/1984", formatter);
     private @Id @GeneratedValue Long orderID;
     private LocalDate checkInDate;
