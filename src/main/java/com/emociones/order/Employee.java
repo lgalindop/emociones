@@ -1,23 +1,52 @@
 package com.emociones.order;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Objects;
-
+/*                       Table "public.employee"
+                         Column         |         Type          | Collation | Nullable |              Default
+                 ------------------------+-----------------------+-----------+----------+-----------------------------------
+                 employee_id            | integer               |           | not null | nextval('employee_seq'::regclass)
+                 first_name             | character varying(25) |           | not null |
+                 last_name              | character varying(25) |           | not null |
+                 second_first_name      | character varying(25) |           |          |
+                 second_last_name       | character varying(25) |           |          |
+                 employee_phone         | character varying(10) |           |          |
+                 employee_email_address | character varying(50) |           |          |
+                 Indexes:
+                 "employee_pkey" PRIMARY KEY, btree (employee_id)
+                 "employee_employee_id_key" UNIQUE CONSTRAINT, btree (employee_id)*/
 @Entity
 @Table(name = "employee")
 public class Employee {
-
-    private @Id @GeneratedValue Long employeeID;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "employee_id")
+    private Long employeeID;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "second_first_name")
+    private String secondFirstName;
+    @Column(name = "second_last_name")
+    private String secondLastName;
+    @Column(name = "employee_phone", unique = true)
     private String employeePhone;
+    @Column(name = "employee_email_address")
     private String employeeEmailAddress;
 
+    public Employee() {
+    }
+
+    public Employee(String firstName, String lastName, String secondFirstName, String secondLastName, String employeePhone, String employeeEmailAddress) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.secondFirstName = secondFirstName;
+        this.secondLastName = secondLastName;
+        this.employeePhone = employeePhone;
+        this.employeeEmailAddress = employeeEmailAddress;
+    }
 
     public String getName() {
         return this.firstName + " " + this.lastName;
@@ -53,6 +82,22 @@ public class Employee {
         this.lastName = lastName;
     }
 
+    public String getSecondFirstName() {
+        return secondFirstName;
+    }
+
+    public void setSecondFirstName(String secondFirstName) {
+        this.secondFirstName = secondFirstName;
+    }
+
+    public String getSecondLastName() {
+        return secondLastName;
+    }
+
+    public void setSecondLastName(String secondLastName) {
+        this.secondLastName = secondLastName;
+    }
+
     public String getEmployeePhone() {
         return employeePhone;
     }
@@ -69,23 +114,15 @@ public class Employee {
         this.employeeEmailAddress = employeeEmailAddress;
     }
 
-
-    public Employee(String firstName, String lastName, String employeePhone, String employeeEmailAddress) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.employeePhone = employeePhone;
-        this.employeeEmailAddress = employeeEmailAddress;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Employee employee)) return false;
-        return employeeID.equals(employee.employeeID) && firstName.equals(employee.firstName) && lastName.equals(employee.lastName) && employeePhone.equals(employee.employeePhone) && Objects.equals(employeeEmailAddress, employee.employeeEmailAddress);
+        return employeeID.equals(employee.employeeID) && firstName.equals(employee.firstName) && lastName.equals(employee.lastName) && Objects.equals(secondFirstName, employee.secondFirstName) && Objects.equals(secondLastName, employee.secondLastName) && Objects.equals(employeePhone, employee.employeePhone) && Objects.equals(employeeEmailAddress, employee.employeeEmailAddress);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(employeeID, firstName, lastName, employeePhone, employeeEmailAddress);
+        return Objects.hash(employeeID, firstName, lastName, secondFirstName, secondLastName, employeePhone, employeeEmailAddress);
     }
 }

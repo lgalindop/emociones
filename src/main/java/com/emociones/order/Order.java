@@ -1,18 +1,93 @@
 package com.emociones.order;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Currency;
 import java.util.Objects;
 
 @Entity
 @Table(name = "customer_order")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "order_id")
+    private Long orderID;
+    @Column(name = "check_in_date")
+    private LocalDate checkInDate;
+    @Column(name = "check_out_date")
+    private LocalDate checkOutDate;
+    @Column(name = "number_of_adults_in_quote")
+    private int numberOfAdultsInQuote;
+    @Column(name = "number_of_minors_in_quote")
+    private int numberOfMinorsInQuote;
+    @Column(name = "minor_one_age")
+    private int minorOneAge;
+    @Column(name = "minor_two_age")
+    private int minorTwoAge;
+    @Column(name = "minor_three_age")
+    private int minorThreeAge;
+    @Column(name = "customer_phone")
+    private String customerPhone;
+    @Column(name = "number_of_days")
+    private int numberOfDays;
+    @Column(name = "number_of_nights")
+    private int numberOfNights;
+    @Column(name = "hotel_name")
+    private String hotelName;
+    @Column(name = "hotel_price")
+    private BigDecimal hotelPrice;
+    @Column(name = "hotel_type")
+    private String hotelType;
+    @Column(name = "transport_type")
+    private String transportType;
+    @Column(name = "transport_carrier")
+    private String transportCarrier;
+    @Column(name = "transport_price")
+    private BigDecimal transportPrice;
+    @Column(name = "transport_checkin_date")
+    private LocalDate transportCheckInDate;
+    @Column(name = "transport_checkout_date")
+    private LocalDate transportCheckOutDate;
+    @Column(name = "shuttle_service_name")
+    private String shuttleServiceName;
+    @Column(name = "order_status")
+    private OrderStatus orderStatus;
+
+    public Order(LocalDate checkInDate, LocalDate checkOutDate, int numberOfAdultsInQuote, int numberOfMinorsInQuote, int minorOneAge, int minorTwoAge, int minorThreeAge, String customerPhone, int numberOfDays, int numberOfNights, String hotelName, BigDecimal hotelPrice, String hotelType, String transportType, String transportCarrier, BigDecimal transportPrice, LocalDate transportCheckInDate, LocalDate transportCheckOutDate, String shuttleServiceName, OrderStatus orderStatus) {
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.numberOfAdultsInQuote = numberOfAdultsInQuote;
+        this.numberOfMinorsInQuote = numberOfMinorsInQuote;
+        this.minorOneAge = minorOneAge;
+        this.minorTwoAge = minorTwoAge;
+        this.minorThreeAge = minorThreeAge;
+        this.customerPhone = customerPhone;
+        this.numberOfDays = numberOfDays;
+        this.numberOfNights = numberOfNights;
+        this.hotelName = hotelName;
+        this.hotelPrice = hotelPrice;
+        this.hotelType = hotelType;
+        this.transportType = transportType;
+        this.transportCarrier = transportCarrier;
+        this.transportPrice = transportPrice;
+        this.transportCheckInDate = transportCheckInDate;
+        this.transportCheckOutDate = transportCheckOutDate;
+        this.shuttleServiceName = shuttleServiceName;
+        this.orderStatus = orderStatus;
+    }
+
+    public Order() {
+    }
+
+    public Order(LocalDate checkInDate, LocalDate checkOutDate, int numberOfAdultsInQuote, String customerPhone, OrderStatus orderStatus) {
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.numberOfAdultsInQuote = numberOfAdultsInQuote;
+        this.customerPhone = customerPhone;
+        this.orderStatus = orderStatus;
+    }
+
     public Long getOrderID() {
         return orderID;
     }
@@ -109,11 +184,11 @@ public class Order {
         this.hotelName = hotelName;
     }
 
-    public Currency getHotelPrice() {
+    public BigDecimal getHotelPrice() {
         return hotelPrice;
     }
 
-    public void setHotelPrice(Currency hotelPrice) {
+    public void setHotelPrice(BigDecimal hotelPrice) {
         this.hotelPrice = hotelPrice;
     }
 
@@ -141,11 +216,11 @@ public class Order {
         this.transportCarrier = transportCarrier;
     }
 
-    public Currency getTransportPrice() {
+    public BigDecimal getTransportPrice() {
         return transportPrice;
     }
 
-    public void setTransportPrice(Currency transportPrice) {
+    public void setTransportPrice(BigDecimal transportPrice) {
         this.transportPrice = transportPrice;
     }
 
@@ -180,60 +255,6 @@ public class Order {
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
-    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-    //LocalDate LuisBirthDayDate = LocalDate.parse("15/12/1984", formatter);
-    private @Id @GeneratedValue Long orderID;
-    private LocalDate checkInDate;
-    private LocalDate checkOutDate;
-    private int numberOfAdultsInQuote;
-    private int numberOfMinorsInQuote;
-    private int minorOneAge;
-    private int minorTwoAge;
-    private int minorThreeAge;
-    private String customerPhone;
-    private int numberOfDays;
-    private int numberOfNights;
-    private String hotelName;
-    private Currency hotelPrice;
-    private String hotelType;
-    private String transportType;
-    private String transportCarrier;
-    private Currency transportPrice;
-    private LocalDate transportCheckInDate;
-    private LocalDate transportCheckOutDate;
-    private String shuttleServiceName;
-    private OrderStatus orderStatus;
-
-    public Order(LocalDate checkInDate, LocalDate checkOutDate, int numberOfAdultsInQuote, int numberOfMinorsInQuote, int minorOneAge, int minorTwoAge, int minorThreeAge, String customerPhone, int numberOfDays, int numberOfNights, String hotelName, Currency hotelPrice, String hotelType, String transportType, String transportCarrier, Currency transportPrice, LocalDate transportCheckInDate, LocalDate transportCheckOutDate, String shuttleServiceName, OrderStatus orderStatus) {
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.numberOfAdultsInQuote = numberOfAdultsInQuote;
-        this.numberOfMinorsInQuote = numberOfMinorsInQuote;
-        this.minorOneAge = minorOneAge;
-        this.minorTwoAge = minorTwoAge;
-        this.minorThreeAge = minorThreeAge;
-        this.customerPhone = customerPhone;
-        this.numberOfDays = numberOfDays;
-        this.numberOfNights = numberOfNights;
-        this.hotelName = hotelName;
-        this.hotelPrice = hotelPrice;
-        this.hotelType = hotelType;
-        this.transportType = transportType;
-        this.transportCarrier = transportCarrier;
-        this.transportPrice = transportPrice;
-        this.transportCheckInDate = transportCheckInDate;
-        this.transportCheckOutDate = transportCheckOutDate;
-        this.shuttleServiceName = shuttleServiceName;
-        this.orderStatus = orderStatus;
-    }
-
-    public Order(LocalDate checkInDate, LocalDate checkOutDate, int numberOfAdultsInQuote, String customerPhone, OrderStatus orderStatus) {
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.numberOfAdultsInQuote = numberOfAdultsInQuote;
-        this.customerPhone = customerPhone;
-        this.orderStatus = orderStatus;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -249,28 +270,6 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "orderID='" + orderID + '\'' +
-                ", checkInDate=" + checkInDate +
-                ", checkOutDate=" + checkOutDate +
-                ", numberOfAdultsInQuote=" + numberOfAdultsInQuote +
-                ", numberOfMinorsInQuote=" + numberOfMinorsInQuote +
-                ", minorOneAge=" + minorOneAge +
-                ", minorTwoAge=" + minorTwoAge +
-                ", minorThreeAge=" + minorThreeAge +
-                ", customerPhone='" + customerPhone + '\'' +
-                ", numberOfDays=" + numberOfDays +
-                ", numberOfNights=" + numberOfNights +
-                ", hotelName='" + hotelName + '\'' +
-                ", hotelPrice=" + hotelPrice +
-                ", hotelType='" + hotelType + '\'' +
-                ", transportType='" + transportType + '\'' +
-                ", transportCarrier='" + transportCarrier + '\'' +
-                ", transportPrice=" + transportPrice +
-                ", transportCheckInDate=" + transportCheckInDate +
-                ", transportCheckOutDate=" + transportCheckOutDate +
-                ", shuttleServiceName='" + shuttleServiceName + '\'' +
-                ", orderStatus='" + orderStatus + '\'' +
-                '}';
+        return "Order{" + "orderID='" + orderID + '\'' + ", checkInDate=" + checkInDate + ", checkOutDate=" + checkOutDate + ", numberOfAdultsInQuote=" + numberOfAdultsInQuote + ", numberOfMinorsInQuote=" + numberOfMinorsInQuote + ", minorOneAge=" + minorOneAge + ", minorTwoAge=" + minorTwoAge + ", minorThreeAge=" + minorThreeAge + ", customerPhone='" + customerPhone + '\'' + ", numberOfDays=" + numberOfDays + ", numberOfNights=" + numberOfNights + ", hotelName='" + hotelName + '\'' + ", hotelPrice=" + hotelPrice + ", hotelType='" + hotelType + '\'' + ", transportType='" + transportType + '\'' + ", transportCarrier='" + transportCarrier + '\'' + ", transportPrice=" + transportPrice + ", transportCheckInDate=" + transportCheckInDate + ", transportCheckOutDate=" + transportCheckOutDate + ", shuttleServiceName='" + shuttleServiceName + '\'' + ", orderStatus='" + orderStatus + '\'' + '}';
     }
 }
