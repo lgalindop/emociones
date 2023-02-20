@@ -3,12 +3,13 @@ package com.emociones.order;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name = "customer"/*, uniqueConstraints = @UniqueConstraint(name = "customer_phone", columnNames = {"customer_phone"})*/)
+@Table(name = "customer")
 public class Customer {
-    @Column(name = "customer_id", unique = true, nullable = false, insertable = false, updatable = false, columnDefinition = "SERIAL")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_id")
     private Long customerID;
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -20,7 +21,6 @@ public class Customer {
     private String lastName;
     @Column(name = "second_last_name")
     private String secondLastName;
-    @Id
     @Column(name = "customer_phone", length = 13, nullable = false, unique = true)
     private String customerPhone;
     @Column(name = "customer_phone_country_code")
@@ -45,9 +45,6 @@ public class Customer {
     private String personalID;
     @Column(name = "personal_id_code")
     private String personalIDCode;
-
-    @OneToMany(mappedBy = "customer")
-    private Set<Order> orders;
 
     public Customer() {
     }
