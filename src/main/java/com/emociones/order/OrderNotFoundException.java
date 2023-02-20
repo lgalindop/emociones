@@ -1,7 +1,7 @@
 package com.emociones.order;
 
 public class OrderNotFoundException extends RuntimeException {
-    public OrderNotFoundException(Long employeeID) {
-        super("Could not find employee " + employeeID);
+    public OrderNotFoundException(Long orderID) {
+        super("Could not find order " + orderID);
     }
 }

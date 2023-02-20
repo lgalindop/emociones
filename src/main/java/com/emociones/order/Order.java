@@ -10,14 +10,14 @@ import java.util.Objects;
 @Table(name = "customer_order")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long orderID;
-    @Column(name = "check_in_date")
+    @Column(name = "check_in_date", nullable = false)
     private LocalDate checkInDate;
-    @Column(name = "check_out_date")
+    @Column(name = "check_out_date", nullable = false)
     private LocalDate checkOutDate;
-    @Column(name = "number_of_adults_in_quote")
+    @Column(name = "number_of_adults_in_quote", nullable = false)
     private int numberOfAdultsInQuote;
     @Column(name = "number_of_minors_in_quote")
     private int numberOfMinorsInQuote;
@@ -27,8 +27,6 @@ public class Order {
     private int minorTwoAge;
     @Column(name = "minor_three_age")
     private int minorThreeAge;
-    @Column(name = "customer_phone")
-    private String customerPhone;
     @Column(name = "number_of_days")
     private int numberOfDays;
     @Column(name = "number_of_nights")
@@ -51,40 +49,29 @@ public class Order {
     private LocalDate transportCheckOutDate;
     @Column(name = "shuttle_service_name")
     private String shuttleServiceName;
-    @Column(name = "order_status")
+    @Column(name = "order_status", nullable = false)
     private OrderStatus orderStatus;
-
-    public Order(LocalDate checkInDate, LocalDate checkOutDate, int numberOfAdultsInQuote, int numberOfMinorsInQuote, int minorOneAge, int minorTwoAge, int minorThreeAge, String customerPhone, int numberOfDays, int numberOfNights, String hotelName, BigDecimal hotelPrice, String hotelType, String transportType, String transportCarrier, BigDecimal transportPrice, LocalDate transportCheckInDate, LocalDate transportCheckOutDate, String shuttleServiceName, OrderStatus orderStatus) {
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.numberOfAdultsInQuote = numberOfAdultsInQuote;
-        this.numberOfMinorsInQuote = numberOfMinorsInQuote;
-        this.minorOneAge = minorOneAge;
-        this.minorTwoAge = minorTwoAge;
-        this.minorThreeAge = minorThreeAge;
-        this.customerPhone = customerPhone;
-        this.numberOfDays = numberOfDays;
-        this.numberOfNights = numberOfNights;
-        this.hotelName = hotelName;
-        this.hotelPrice = hotelPrice;
-        this.hotelType = hotelType;
-        this.transportType = transportType;
-        this.transportCarrier = transportCarrier;
-        this.transportPrice = transportPrice;
-        this.transportCheckInDate = transportCheckInDate;
-        this.transportCheckOutDate = transportCheckOutDate;
-        this.shuttleServiceName = shuttleServiceName;
-        this.orderStatus = orderStatus;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_phone")
+    private Customer customer;
+    @Column(name = "customer_phone", insertable = false, updatable = false)
+    private String customerPhone;
 
     public Order() {
     }
 
-    public Order(LocalDate checkInDate, LocalDate checkOutDate, int numberOfAdultsInQuote, String customerPhone, OrderStatus orderStatus) {
+    public Order(LocalDate checkInDate, LocalDate checkOutDate, int numberOfAdultsInQuote, OrderStatus orderStatus, String customerPhone) {
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.numberOfAdultsInQuote = numberOfAdultsInQuote;
+        this.orderStatus = orderStatus;
         this.customerPhone = customerPhone;
+    }
+
+    public Order(LocalDate checkInDate, LocalDate checkOutDate, int numberOfAdultsInQuote, OrderStatus orderStatus) {
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.numberOfAdultsInQuote = numberOfAdultsInQuote;
         this.orderStatus = orderStatus;
     }
 
@@ -150,14 +137,6 @@ public class Order {
 
     public void setMinorThreeAge(int minorThreeAge) {
         this.minorThreeAge = minorThreeAge;
-    }
-
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
     }
 
     public int getNumberOfDays() {
@@ -260,16 +239,16 @@ public class Order {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order order)) return false;
-        return numberOfAdultsInQuote == order.numberOfAdultsInQuote && numberOfMinorsInQuote == order.numberOfMinorsInQuote && minorOneAge == order.minorOneAge && minorTwoAge == order.minorTwoAge && minorThreeAge == order.minorThreeAge && numberOfDays == order.numberOfDays && numberOfNights == order.numberOfNights && orderID.equals(order.orderID) && checkInDate.equals(order.checkInDate) && checkOutDate.equals(order.checkOutDate) && customerPhone.equals(order.customerPhone) && Objects.equals(hotelName, order.hotelName) && Objects.equals(hotelPrice, order.hotelPrice) && Objects.equals(hotelType, order.hotelType) && Objects.equals(transportType, order.transportType) && Objects.equals(transportCarrier, order.transportCarrier) && Objects.equals(transportPrice, order.transportPrice) && Objects.equals(transportCheckInDate, order.transportCheckInDate) && Objects.equals(transportCheckOutDate, order.transportCheckOutDate) && Objects.equals(shuttleServiceName, order.shuttleServiceName) && orderStatus.equals(order.orderStatus);
+        return numberOfAdultsInQuote == order.numberOfAdultsInQuote && numberOfMinorsInQuote == order.numberOfMinorsInQuote && minorOneAge == order.minorOneAge && minorTwoAge == order.minorTwoAge && minorThreeAge == order.minorThreeAge && numberOfDays == order.numberOfDays && numberOfNights == order.numberOfNights && orderID.equals(order.orderID) && checkInDate.equals(order.checkInDate) && checkOutDate.equals(order.checkOutDate) && Objects.equals(hotelName, order.hotelName) && Objects.equals(hotelPrice, order.hotelPrice) && Objects.equals(hotelType, order.hotelType) && Objects.equals(transportType, order.transportType) && Objects.equals(transportCarrier, order.transportCarrier) && Objects.equals(transportPrice, order.transportPrice) && Objects.equals(transportCheckInDate, order.transportCheckInDate) && Objects.equals(transportCheckOutDate, order.transportCheckOutDate) && Objects.equals(shuttleServiceName, order.shuttleServiceName) && orderStatus.equals(order.orderStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderID, checkInDate, checkOutDate, numberOfAdultsInQuote, numberOfMinorsInQuote, minorOneAge, minorTwoAge, minorThreeAge, customerPhone, numberOfDays, numberOfNights, hotelName, hotelPrice, hotelType, transportType, transportCarrier, transportPrice, transportCheckInDate, transportCheckOutDate, shuttleServiceName, orderStatus);
+        return Objects.hash(orderID, checkInDate, checkOutDate, numberOfAdultsInQuote, numberOfMinorsInQuote, minorOneAge, minorTwoAge, minorThreeAge, numberOfDays, numberOfNights, hotelName, hotelPrice, hotelType, transportType, transportCarrier, transportPrice, transportCheckInDate, transportCheckOutDate, shuttleServiceName, orderStatus);
     }
 
     @Override
     public String toString() {
-        return "Order{" + "orderID='" + orderID + '\'' + ", checkInDate=" + checkInDate + ", checkOutDate=" + checkOutDate + ", numberOfAdultsInQuote=" + numberOfAdultsInQuote + ", numberOfMinorsInQuote=" + numberOfMinorsInQuote + ", minorOneAge=" + minorOneAge + ", minorTwoAge=" + minorTwoAge + ", minorThreeAge=" + minorThreeAge + ", customerPhone='" + customerPhone + '\'' + ", numberOfDays=" + numberOfDays + ", numberOfNights=" + numberOfNights + ", hotelName='" + hotelName + '\'' + ", hotelPrice=" + hotelPrice + ", hotelType='" + hotelType + '\'' + ", transportType='" + transportType + '\'' + ", transportCarrier='" + transportCarrier + '\'' + ", transportPrice=" + transportPrice + ", transportCheckInDate=" + transportCheckInDate + ", transportCheckOutDate=" + transportCheckOutDate + ", shuttleServiceName='" + shuttleServiceName + '\'' + ", orderStatus='" + orderStatus + '\'' + '}';
+        return "Order{" + "orderID='" + orderID + '\'' + ", checkInDate=" + checkInDate + ", checkOutDate=" + checkOutDate + ", numberOfAdultsInQuote=" + numberOfAdultsInQuote + ", numberOfMinorsInQuote=" + numberOfMinorsInQuote + ", minorOneAge=" + minorOneAge + ", minorTwoAge=" + minorTwoAge + ", minorThreeAge=" + minorThreeAge + ", customerPhone='" + '\'' + ", numberOfDays=" + numberOfDays + ", numberOfNights=" + numberOfNights + ", hotelName='" + hotelName + '\'' + ", hotelPrice=" + hotelPrice + ", hotelType='" + hotelType + '\'' + ", transportType='" + transportType + '\'' + ", transportCarrier='" + transportCarrier + '\'' + ", transportPrice=" + transportPrice + ", transportCheckInDate=" + transportCheckInDate + ", transportCheckOutDate=" + transportCheckOutDate + ", shuttleServiceName='" + shuttleServiceName + '\'' + ", orderStatus='" + orderStatus + '\'' + '}';
     }
 }

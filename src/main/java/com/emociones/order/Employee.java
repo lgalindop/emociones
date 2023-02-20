@@ -3,35 +3,23 @@ package com.emociones.order;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-/*                       Table "public.employee"
-                         Column         |         Type          | Collation | Nullable |              Default
-                 ------------------------+-----------------------+-----------+----------+-----------------------------------
-                 employee_id            | integer               |           | not null | nextval('employee_seq'::regclass)
-                 first_name             | character varying(25) |           | not null |
-                 last_name              | character varying(25) |           | not null |
-                 second_first_name      | character varying(25) |           |          |
-                 second_last_name       | character varying(25) |           |          |
-                 employee_phone         | character varying(10) |           |          |
-                 employee_email_address | character varying(50) |           |          |
-                 Indexes:
-                 "employee_pkey" PRIMARY KEY, btree (employee_id)
-                 "employee_employee_id_key" UNIQUE CONSTRAINT, btree (employee_id)*/
+
 @Entity
-@Table(name = "employee")
+@Table(name = "employee", uniqueConstraints = @UniqueConstraint(name = "employee_phone", columnNames = {"employee_phone"}))
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
     private Long employeeID;
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
     @Column(name = "second_first_name")
     private String secondFirstName;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
     @Column(name = "second_last_name")
     private String secondLastName;
-    @Column(name = "employee_phone", unique = true)
+    @Column(name = "employee_phone", nullable = false)
     private String employeePhone;
     @Column(name = "employee_email_address")
     private String employeeEmailAddress;
